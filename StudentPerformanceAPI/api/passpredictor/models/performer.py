@@ -44,10 +44,11 @@ class Performer:
         self.d = self.d.sample(frac=1)
         self.d_train= self.d[:self.max_train_line]
         self.d_test = self.d[self.max_train_line:]
+        
 
         
 
-    def train_model(self):
+    def train(self):
         #split training data
         d_train_att = self.d_train.drop(['pass'], axis=1)
         d_train_pass = self.d_train['pass']
@@ -69,7 +70,7 @@ class Performer:
 
         #if tree not trained then train it
         if not self.is_trained:
-            self.train_model()
+            self.train()
         
         # show the tree score on test dataset
         print(self.tree_classifier.score(d_test_att, d_test_pass))
