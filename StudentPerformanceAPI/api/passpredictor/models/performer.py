@@ -1,9 +1,14 @@
 import pandas as pd
 import numpy as np
 from sklearn import tree
+import os
+
+from api.settings import BASE_DIR
 
 
 class Performer:
+    print(BASE_DIR)
+    base_dir = os.path.join(BASE_DIR, 'passpredictor/models')
     #according to investigations
     #by default we use portuguese course dataset
     #use 5 for binary tree best max_depth for portuguese course performance
@@ -12,13 +17,13 @@ class Performer:
     max_train_line=500
     
     #load dataset of student portuguese scores
-    d = pd.read_csv('dataset/student-por.csv', sep=';')
+    d = pd.read_csv(os.path.join(base_dir,'dataset/student-por.csv'), sep=';')
     is_trained=False
 
 
     def __init__(self, course='por'):
         if course=='mat':
-            self.d = pd.read_csv('dataset/student-mat.csv', sep=';')
+            self.d = pd.read_csv(os.path.join(self.base_dir,'dataset/student-mat.csv'), sep=';')
             #use 11 for binary tree best max_depth for math course performance
             self.max_depth=11
             #use 200 for rows lines shuffled for training (60% of dataset) 

@@ -16,6 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from passpredictor import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('classify/', views.call_model.as_view())
 ]
+
+
