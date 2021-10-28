@@ -1,23 +1,20 @@
 from django.shortcuts import render
 from pandas.io import json
-from .models.performer import Performer
+from .models.svm import Predictor
 import pandas as pd
 from django.shortcuts import render
-from django.http import JsonResponse, request
+from django.http import JsonResponse, HttpResponseForbidden
 from rest_framework.views import APIView
 
 class call_model(APIView):
-    def get(self, request):
-        predictor = Performer()
+    def post(self, request):
+        predictor = Predictor()
         
-        if request.method == 'GET':
-            course:str = request.GET.get('course', 'por')
-            if 'mat' in course:
-                predictor = Performer(course='mat')
+        if request.method == 'POST':
+            predictor = Predictor()
             
-            if not predictor.is_trained:
-                predictor.train()
-            to_predict = pd.DataFrame.from_dict(json.loads(request.body))
-            evaluation= predictor.evaluate_student(to_predict)
+            evaluation= predictor.predict(request.data)
             
             return JsonResponse({'predict':  'passed' if evaluation[0]==1 else 'failed'})
+        else:
+            return HttpResponseForbidden({'error': 'method not allowed'})
